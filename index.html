@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Serverless Notes V2</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Serverless Notes V2</h1>
+    <button id="loginBtn">Login</button>
+    <button id="logoutBtn" style="display:none">Logout</button>
+  </header>
+
+  <main>
+    <section id="notesSection" style="display:none">
+      <h2>Your Notes</h2>
+      <ul id="notesList"></ul>
+      <h3>Add a Note</h3>
+      <form id="addNoteForm">
+        <input type="text" id="noteTitle" placeholder="Title" required>
+        <textarea id="noteContent" placeholder="Content" required></textarea>
+        <button type="submit">Add Note</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
