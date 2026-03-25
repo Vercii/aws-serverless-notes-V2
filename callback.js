@@ -17,11 +17,17 @@ window.onload = async () => {
     body.append("code", code);
     body.append("redirect_uri", redirectUri);
 
-    const res = await fetch("https://us-east-1rq8auujwo.auth.us-east-1.amazoncognito.com/oauth2/token", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body,
-    });
+    const res = await fetch(
+  "https://us-east-1rq8auujwo.auth.us-east-1.amazoncognito.com/oauth2/token",
+  {
+    method: "POST",
+    headers: { 
+      "Content-Type": "application/x-www-form-urlencoded" 
+    },
+    body,
+    mode: "cors"
+  }
+);
 
     const data = await res.json();
 
