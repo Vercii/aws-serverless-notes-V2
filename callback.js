@@ -9,7 +9,7 @@ window.onload = async () => {
 
   try {
     const clientId = "2ue45ahob50gej2u7vh4hdab7o";
-    const redirectUri = "http://serverless-notes-V2-frontend.s3-website-us-east-1.amazonaws.com/callback.html";
+    const redirectUri = "https://serverless-notes-V2-frontend.s3-website-us-east-1.amazonaws.com/callback.html";
 
     const body = new URLSearchParams();
     body.append("grant_type", "authorization_code");

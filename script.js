@@ -27,7 +27,7 @@ function updateUI() {
 
 loginBtn.addEventListener("click", () => {
   const clientId = "2ue45ahob50gej2u7vh4hdab7o";
-  const redirectUri = "http://serverless-notes-V2-frontend.s3-website-us-east-1.amazonaws.com/callback.html";
+  const redirectUri = "https://serverless-notes-V2-frontend.s3-website-us-east-1.amazonaws.com/callback.html";
   const domain = "https://us-east-1rq8auujwo.auth.us-east-1.amazoncognito.com";
 
   const url = `${domain}/login?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=openid+email+profile`;
