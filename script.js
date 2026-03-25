@@ -6,12 +6,13 @@ const addNoteForm = document.getElementById("addNoteForm");
 
 const API_URL = "https://fjwdttb11f.execute-api.us-east-1.amazonaws.com";
 
+// Get token from session storage
 function getToken() {
   return sessionStorage.getItem("id_token");
 }
 
 function updateUI() {
-  const token = getToken(); 
+  const token = getToken();
 
   if (token) {
     loginBtn.style.display = "none";
@@ -25,6 +26,7 @@ function updateUI() {
   }
 }
 
+// Login button click
 loginBtn.addEventListener("click", () => {
   const clientId = "2ue45ahob50gej2u7vh4hdab7o";
   const redirectUri = "https://serverless-notes-V2-frontend.s3-website-us-east-1.amazonaws.com/callback.html";
@@ -35,15 +37,16 @@ loginBtn.addEventListener("click", () => {
   window.location.href = url;
 });
 
+// Logout
 logoutBtn.addEventListener("click", () => {
   sessionStorage.removeItem("id_token");
   updateUI();
 });
 
+// Add note
 addNoteForm.addEventListener("submit", async (e) => {
   e.preventDefault();
-
-  const token = getToken(); 
+  const token = getToken();
 
   const title = document.getElementById("noteTitle").value;
   const content = document.getElementById("noteContent").value;
@@ -61,8 +64,9 @@ addNoteForm.addEventListener("submit", async (e) => {
   fetchNotes();
 });
 
+// Fetch notes
 async function fetchNotes() {
-  const token = getToken(); 
+  const token = getToken();
 
   const res = await fetch(`${API_URL}/notes`, {
     headers: {
@@ -85,4 +89,5 @@ async function fetchNotes() {
   });
 }
 
+// Initialize
 updateUI();

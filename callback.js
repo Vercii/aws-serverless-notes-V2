@@ -1,3 +1,4 @@
+// callback.js
 window.onload = async () => {
   const params = new URLSearchParams(window.location.search);
   const code = params.get("code");
@@ -18,16 +19,14 @@ window.onload = async () => {
     body.append("redirect_uri", redirectUri);
 
     const res = await fetch(
-  "https://us-east-1rq8auujwo.auth.us-east-1.amazoncognito.com/oauth2/token",
-  {
-    method: "POST",
-    headers: { 
-      "Content-Type": "application/x-www-form-urlencoded" 
-    },
-    body,
-    mode: "cors"
-  }
-);
+      "https://us-east-1rq8auujwo.auth.us-east-1.amazoncognito.com/oauth2/token",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body,
+        mode: "cors"
+      }
+    );
 
     const data = await res.json();
 
@@ -37,10 +36,10 @@ window.onload = async () => {
       return;
     }
 
-    // ✅ Store token
+    // ✅ Store the token
     sessionStorage.setItem("id_token", data.id_token);
 
-    // ✅ Redirect back
+    // ✅ Redirect back to main page
     window.location.href = "index.html";
 
   } catch (err) {
