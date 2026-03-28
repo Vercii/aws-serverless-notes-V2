@@ -10,7 +10,7 @@ window.onload = async () => {
 
   try {
     // Send code to backend Lambda for secure token exchange
-    const res = await fetch("https://fjwdttb11f.execute-api.us-east-1.amazonaws.com//exchange-code", {
+    const res = await fetch("https://fjwdttb11f.execute-api.us-east-1.amazonaws.com/exchange-code", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ code }),
