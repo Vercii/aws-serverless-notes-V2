@@ -9,24 +9,12 @@ window.onload = async () => {
   }
 
   try {
-    const clientId = "2ue45ahob50gej2u7vh4hdab7o";
-    const redirectUri = "https://serverless-notes-V2-frontend.s3-website-us-east-1.amazonaws.com/callback.html";
-
-    const body = new URLSearchParams();
-    body.append("grant_type", "authorization_code");
-    body.append("client_id", clientId);
-    body.append("code", code);
-    body.append("redirect_uri", redirectUri);
-
-    const res = await fetch(
-      "https://us-east-1rq8auujwo.auth.us-east-1.amazoncognito.com/oauth2/token",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body,
-        mode: "cors"
-      }
-    );
+    // Send code to backend Lambda for secure token exchange
+    const res = await fetch("https://fjwdttb11f.execute-api.us-east-1.amazonaws.com//exchange-code", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ code }),
+    });
 
     const data = await res.json();
 
@@ -36,10 +24,10 @@ window.onload = async () => {
       return;
     }
 
-    // ✅ Store the token
+    // Store the token in sessionStorage
     sessionStorage.setItem("id_token", data.id_token);
 
-    // ✅ Redirect back to main page
+    // Redirect back to main page
     window.location.href = "index.html";
 
   } catch (err) {
