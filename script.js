@@ -64,6 +64,20 @@ addNoteForm.addEventListener("submit", async (e) => {
   fetchNotes();
 });
 
+// DELETE NOTE FUNCTION
+async function deleteNote(noteID) {
+  const token = getToken();
+
+  await fetch(`${API_URL}/notes/${noteID}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  fetchNotes(); // refresh list
+}
+
 // Fetch notes
 async function fetchNotes() {
   const token = getToken();
@@ -74,17 +88,29 @@ async function fetchNotes() {
     },
   });
 
-  const notes = await res.json();
+  const data = await res.json();
+
+  // Prevent crash if backend returns error object
+  const notes = Array.isArray(data) ? data : [];
 
   notesList.innerHTML = "";
 
   notes.forEach((note) => {
     const li = document.createElement("li");
+
     li.innerHTML = `
       <strong>${note.title}</strong>
       <p>${note.content}</p>
       <small>${note.timestamp}</small>
+      <br/>
+      <button data-id="${note.noteID}">Delete</button>
     `;
+
+    // attach delete event
+    li.querySelector("button").addEventListener("click", () => {
+      deleteNote(note.noteID);
+    });
+
     notesList.appendChild(li);
   });
 }
