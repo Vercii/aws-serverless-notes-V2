@@ -17,9 +17,21 @@
   </header>
 
   <main>
+
+    <!-- 🆕 LANDING PAGE -->
+    <section id="landingSection" class="landing">
+      <div class="landing-content">
+        <h2>Simple. Secure. Serverless Notes.</h2>
+        <p>
+          Store your notes in the cloud with a fast, modern, serverless architecture.
+        </p>
+        <button id="landingLoginBtn">Get Started</button>
+      </div>
+    </section>
+
+    <!-- NOTES SECTION -->
     <section id="notesSection" style="display:none">
 
-      <!-- ADD NOTE (TOP SECTION) -->
       <div class="add-note-card">
         <h2>Add Note</h2>
         <form id="addNoteForm">
@@ -29,11 +41,11 @@
         </form>
       </div>
 
-      <!-- NOTES GRID -->
       <h2>Your Notes</h2>
       <div id="notesList" class="notes-grid"></div>
 
     </section>
+
   </main>
 
   <script src="script.js"></script>

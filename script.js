@@ -1,8 +1,10 @@
 const loginBtn = document.getElementById("loginBtn");
 const logoutBtn = document.getElementById("logoutBtn");
 const notesSection = document.getElementById("notesSection");
+const landingSection = document.getElementById("landingSection");
 const notesList = document.getElementById("notesList");
 const addNoteForm = document.getElementById("addNoteForm");
+const landingLoginBtn = document.getElementById("landingLoginBtn");
 
 const API_URL = "https://fjwdttb11f.execute-api.us-east-1.amazonaws.com";
 
@@ -17,15 +19,18 @@ function updateUI() {
     loginBtn.style.display = "none";
     logoutBtn.style.display = "inline-block";
     notesSection.style.display = "block";
+    landingSection.style.display = "none";
     fetchNotes();
   } else {
     loginBtn.style.display = "inline-block";
     logoutBtn.style.display = "none";
     notesSection.style.display = "none";
+    landingSection.style.display = "flex";
   }
 }
 
-loginBtn.addEventListener("click", () => {
+// 🔐 LOGIN HANDLER (reusable)
+function handleLogin() {
   const clientId = "2ue45ahob50gej2u7vh4hdab7o";
   const redirectUri = "https://main.d3i1c30pbgufzf.amplifyapp.com/callback.html";
   const domain = "https://us-east-1rq8auujwo.auth.us-east-1.amazoncognito.com";
@@ -33,7 +38,11 @@ loginBtn.addEventListener("click", () => {
   const url = `${domain}/login?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=openid+email+profile`;
 
   window.location.href = url;
-});
+}
+
+// Both buttons trigger same login
+loginBtn.addEventListener("click", handleLogin);
+landingLoginBtn.addEventListener("click", handleLogin);
 
 logoutBtn.addEventListener("click", () => {
   sessionStorage.removeItem("id_token");

@@ -26,7 +26,80 @@ button {
   font-weight: 500;
 }
 
+#loginBtn {body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f5f7fa;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background: #4b6cb7;
+  background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+  color: white;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
 #loginBtn {
+  background-color: #ff7f50;
+  color: white;
+}
+
+#logoutBtn {
+  background-color: #f44336;
+  color: white;
+}
+
+main {
+  padding: 2rem;
+  max-width: 600px;
+  margin: auto;
+}
+
+#notesList {
+  list-style: none;
+  padding: 0;
+}
+
+#notesList li {
+  background: white;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+}
+
+input, textarea {
+  width: 90%;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+form button {
+  background-color: #4b6cb7;
+  color: white;
+  width: 100%;
+}
+
   background: #3b82f6;
   color: white;
 }
@@ -52,7 +125,7 @@ main {
 }
 
 input, textarea {
-  width: 100%;
+  width: 90%;
   padding: 0.6rem;
   margin-bottom: 0.6rem;
   border-radius: 6px;
@@ -117,4 +190,35 @@ form button {
   .notes-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* LANDING PAGE */
+.landing {
+  height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.landing-content {
+  max-width: 500px;
+}
+
+.landing h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.landing p {
+  color: #475569;
+  margin-bottom: 1.5rem;
+}
+
+.landing button {
+  background: #3b82f6;
+  color: white;
+  padding: 0.7rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 8px;
 }
