@@ -7,22 +7,32 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
   <header>
-    <h1>Serverless Notes V2</h1>
-    <button id="loginBtn">Login</button>
-    <button id="logoutBtn" style="display:none">Logout</button>
+    <h1>Serverless Notes</h1>
+    <div>
+      <button id="loginBtn">Login</button>
+      <button id="logoutBtn" style="display:none">Logout</button>
+    </div>
   </header>
 
   <main>
     <section id="notesSection" style="display:none">
+
+      <!-- ADD NOTE (TOP SECTION) -->
+      <div class="add-note-card">
+        <h2>Add Note</h2>
+        <form id="addNoteForm">
+          <input type="text" id="noteTitle" placeholder="Title" required>
+          <textarea id="noteContent" placeholder="Content" required></textarea>
+          <button type="submit">Add Note</button>
+        </form>
+      </div>
+
+      <!-- NOTES GRID -->
       <h2>Your Notes</h2>
-      <ul id="notesList"></ul>
-      <h3>Add a Note</h3>
-      <form id="addNoteForm">
-        <input type="text" id="noteTitle" placeholder="Title" required>
-        <textarea id="noteContent" placeholder="Content" required></textarea>
-        <button type="submit">Add Note</button>
-      </form>
+      <div id="notesList" class="notes-grid"></div>
+
     </section>
   </main>
 

@@ -6,7 +6,6 @@ const addNoteForm = document.getElementById("addNoteForm");
 
 const API_URL = "https://fjwdttb11f.execute-api.us-east-1.amazonaws.com";
 
-// Get token from session storage
 function getToken() {
   return sessionStorage.getItem("id_token");
 }
@@ -26,7 +25,6 @@ function updateUI() {
   }
 }
 
-// Login button click
 loginBtn.addEventListener("click", () => {
   const clientId = "2ue45ahob50gej2u7vh4hdab7o";
   const redirectUri = "https://main.d3i1c30pbgufzf.amplifyapp.com/callback.html";
@@ -37,13 +35,11 @@ loginBtn.addEventListener("click", () => {
   window.location.href = url;
 });
 
-// Logout
 logoutBtn.addEventListener("click", () => {
   sessionStorage.removeItem("id_token");
   updateUI();
 });
 
-// Add note
 addNoteForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const token = getToken();
@@ -64,7 +60,6 @@ addNoteForm.addEventListener("submit", async (e) => {
   fetchNotes();
 });
 
-// DELETE NOTE FUNCTION
 async function deleteNote(noteID) {
   const token = getToken();
 
@@ -75,10 +70,9 @@ async function deleteNote(noteID) {
     },
   });
 
-  fetchNotes(); // refresh list
+  fetchNotes();
 }
 
-// Fetch notes
 async function fetchNotes() {
   const token = getToken();
 
@@ -89,31 +83,27 @@ async function fetchNotes() {
   });
 
   const data = await res.json();
-
-  // Prevent crash if backend returns error object
   const notes = Array.isArray(data) ? data : [];
 
   notesList.innerHTML = "";
 
   notes.forEach((note) => {
-    const li = document.createElement("li");
+    const card = document.createElement("div");
+    card.className = "note-card";
 
-    li.innerHTML = `
-      <strong>${note.title}</strong>
+    card.innerHTML = `
+      <h3>${note.title}</h3>
       <p>${note.content}</p>
-      <small>${note.timestamp}</small>
-      <br/>
-      <button data-id="${note.noteID}">Delete</button>
+      <small>${new Date(note.timestamp).toLocaleString()}</small>
+      <button class="delete-btn">Delete</button>
     `;
 
-    // attach delete event
-    li.querySelector("button").addEventListener("click", () => {
+    card.querySelector(".delete-btn").addEventListener("click", () => {
       deleteNote(note.noteID);
     });
 
-    notesList.appendChild(li);
+    notesList.appendChild(card);
   });
 }
 
-// Initialize
 updateUI();
