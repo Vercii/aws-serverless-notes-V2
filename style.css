@@ -5,14 +5,22 @@ body {
   color: #1e293b;
 }
 
+/* HEADER FIX */
 header {
   background: #1e293b;
   color: white;
   padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
+h1 {
+  margin: 0;
+  line-height: 1;
+}
+
+/* BUTTONS */
 button {
   border: none;
   border-radius: 6px;
@@ -23,37 +31,14 @@ button {
 #loginBtn { background: #3b82f6; color: white; }
 #logoutBtn { background: #ef4444; color: white; }
 
+/* MAIN */
 main {
   max-width: 1100px;
   margin: auto;
   padding: 2rem;
 }
 
-.add-note-card {
-  background: white;
-  padding: 1.5rem;
-  border-radius: 10px;
-  margin-bottom: 2rem;
-}
-
-.notes-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-}
-
-.note-card {
-  background: white;
-  padding: 1rem;
-  border-radius: 10px;
-}
-
-.delete-btn {
-  margin-top: 0.5rem;
-  background: #ef4444;
-  color: white;
-}
-
+/* LANDING */
 .landing {
   height: 70vh;
   display: flex;
@@ -62,6 +47,57 @@ main {
   text-align: center;
 }
 
+/* FORM CARD */
+.add-note-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin-bottom: 2rem;
+}
+
+/* NOTE GRID */
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+/* NOTE CARD */
+.note-card {
+  background: white;
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+/* NOTE FORM STACK FIX */
+#addNoteForm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 0.6rem;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+}
+
+/* BUTTON FULL WIDTH */
+form button {
+  background: #3b82f6;
+  color: white;
+  width: 100%;
+}
+
+/* DELETE */
+.delete-btn {
+  margin-top: 0.5rem;
+  background: #ef4444;
+  color: white;
+}
+
+/* FOLDER ACTIONS */
 .folder-actions {
   display: flex;
   gap: 0.5rem;
