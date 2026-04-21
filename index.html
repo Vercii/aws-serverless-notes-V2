@@ -8,62 +8,41 @@
 </head>
 <body>
 
-  <header>
-    <h1>Serverless Notes</h1>
-    <div>
-      <button id="loginBtn">Login</button>
-      <button id="logoutBtn" style="display:none">Logout</button>
-    </div>
-  </header>
+<header>
+  <h1>Serverless Notes</h1>
+  <button id="logoutBtn">Logout</button>
+</header>
 
-  <main>
+<main class="app">
 
-    <!-- LANDING PAGE -->
-    <section id="landingSection" class="landing">
-      <div class="landing-content">
-        <h2>Simple. Secure. Serverless Notes.</h2>
-        <p>
-          Store your notes in the cloud with a fast, modern, serverless architecture.
-        </p>
-        <button id="landingLoginBtn">Get Started</button>
-      </div>
-    </section>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <h2>Folders</h2>
 
-    <!-- FOLDERS -->
-    <section id="foldersSection" style="display:none">
-      <div class="add-note-card">
-        <h2>Create Folder</h2>
-        <form id="addFolderForm">
-          <input type="text" id="folderName" placeholder="Folder Name" required>
-          <button type="submit">Create Folder</button>
-        </form>
-      </div>
+    <form id="addFolderForm">
+      <input type="text" id="folderName" placeholder="New folder..." required>
+    </form>
 
-      <h2>Your Folders</h2>
-      <div id="foldersList" class="notes-grid"></div>
-    </section>
+    <div id="foldersList"></div>
+  </aside>
 
-    <!-- NOTES -->
-    <section id="notesSection" style="display:none">
+  <!-- MAIN CONTENT -->
+  <section class="content">
 
-      <button id="backBtn">← Back to Folders</button>
+    <h2 id="currentFolderName">Select a folder</h2>
 
-      <div class="add-note-card">
-        <h2>Add Note</h2>
-        <form id="addNoteForm">
-          <input type="text" id="noteTitle" placeholder="Title" required>
-          <textarea id="noteContent" placeholder="Content" required></textarea>
-          <button type="submit">Add Note</button>
-        </form>
-      </div>
+    <form id="addNoteForm">
+      <input type="text" id="noteTitle" placeholder="Title" required>
+      <textarea id="noteContent" placeholder="Write your note..." required></textarea>
+      <button type="submit">Add Note</button>
+    </form>
 
-      <h2>Your Notes</h2>
-      <div id="notesList" class="notes-grid"></div>
+    <div id="notesList"></div>
 
-    </section>
+  </section>
 
-  </main>
+</main>
 
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
