@@ -34,7 +34,7 @@ button {
 }
 
 /* LOGIN / LOGOUT */
-#loginBtn { background: #3b82f6; color: white; }
+#loginBtn { background: #1e293b; color: white; }
 #logoutBtn { background: #ef4444; color: white; }
 
 /* MAIN */
@@ -80,7 +80,7 @@ main {
 
 /* Folder submit button spacing consistency */
 #addFolderForm button {
-  background: #3b82f6;
+  background: #1e293b;
   color: white;
 }
 
@@ -115,7 +115,7 @@ input, textarea {
 
 /* BUTTON FULL WIDTH (notes form) */
 form button {
-  background: #3b82f6;
+  background: #1e293b;
   color: white;
   width: 100%;
 }
