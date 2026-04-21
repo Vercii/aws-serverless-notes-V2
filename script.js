@@ -6,6 +6,14 @@ const notesList = document.getElementById("notesList");
 const addNoteForm = document.getElementById("addNoteForm");
 const landingLoginBtn = document.getElementById("landingLoginBtn");
 
+const foldersSection = document.getElementById("foldersSection");
+const foldersList = document.getElementById("foldersList");
+const addFolderForm = document.getElementById("addFolderForm");
+
+const backBtn = document.getElementById("backBtn");
+
+let currentFolderID = null;
+
 const API_URL = "https://fjwdttb11f.execute-api.us-east-1.amazonaws.com";
 
 function getToken() {
@@ -18,18 +26,23 @@ function updateUI() {
   if (token) {
     loginBtn.style.display = "none";
     logoutBtn.style.display = "inline-block";
-    notesSection.style.display = "block";
     landingSection.style.display = "none";
-    fetchNotes();
+
+    foldersSection.style.display = "block";
+    notesSection.style.display = "none";
+
+    fetchFolders();
   } else {
     loginBtn.style.display = "inline-block";
     logoutBtn.style.display = "none";
+
     notesSection.style.display = "none";
+    foldersSection.style.display = "none";
     landingSection.style.display = "flex";
   }
 }
 
-// 🔐 LOGIN HANDLER (reusable)
+// LOGIN
 function handleLogin() {
   const clientId = "2ue45ahob50gej2u7vh4hdab7o";
   const redirectUri = "https://main.d3i1c30pbgufzf.amplifyapp.com/callback.html";
@@ -40,17 +53,64 @@ function handleLogin() {
   window.location.href = url;
 }
 
-// Both buttons trigger same login
+// OPEN FOLDER
+function openFolder(folderID) {
+  currentFolderID = folderID;
+
+  foldersSection.style.display = "none";
+  notesSection.style.display = "block";
+
+  notesList.innerHTML = "";
+  fetchNotes();
+}
+
+// BACK TO FOLDERS
+backBtn.addEventListener("click", () => {
+  currentFolderID = null;
+  notesSection.style.display = "none";
+  foldersSection.style.display = "block";
+});
+
+// LOGIN BUTTONS
 loginBtn.addEventListener("click", handleLogin);
 landingLoginBtn.addEventListener("click", handleLogin);
 
+// LOGOUT
 logoutBtn.addEventListener("click", () => {
   sessionStorage.removeItem("id_token");
+  currentFolderID = null;
   updateUI();
 });
 
+// CREATE FOLDER
+addFolderForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const token = getToken();
+
+  const name = document.getElementById("folderName").value;
+
+  await fetch(`${API_URL}/folders`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ name }),
+  });
+
+  addFolderForm.reset();
+  fetchFolders();
+});
+
+// ADD NOTE
 addNoteForm.addEventListener("submit", async (e) => {
   e.preventDefault();
+
+  if (!currentFolderID) {
+    alert("Please select a folder first.");
+    return;
+  }
+
   const token = getToken();
 
   const title = document.getElementById("noteTitle").value;
@@ -62,39 +122,72 @@ addNoteForm.addEventListener("submit", async (e) => {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ title, content }),
+    body: JSON.stringify({
+      title,
+      content,
+      folderID: currentFolderID,
+    }),
   });
 
   addNoteForm.reset();
   fetchNotes();
 });
 
-async function deleteNote(noteID) {
+// FETCH FOLDERS
+async function fetchFolders() {
   const token = getToken();
 
-  await fetch(`${API_URL}/notes/${noteID}`, {
-    method: "DELETE",
+  const res = await fetch(`${API_URL}/folders`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
 
-  fetchNotes();
+  const folders = await res.json();
+
+  foldersList.innerHTML = "";
+
+  folders.forEach((folder) => {
+    const card = document.createElement("div");
+    card.className = "note-card";
+
+    card.innerHTML = `
+      <h3>${folder.name}</h3>
+      <button class="open-btn">Open</button>
+    `;
+
+    card.querySelector(".open-btn").addEventListener("click", () => {
+      openFolder(folder.folderID);
+    });
+
+    foldersList.appendChild(card);
+  });
 }
 
+// FETCH NOTES
 async function fetchNotes() {
   const token = getToken();
 
-  const res = await fetch(`${API_URL}/notes`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  if (!currentFolderID) return;
+
+  const res = await fetch(
+    `${API_URL}/notes?folderID=${currentFolderID}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
 
   const data = await res.json();
   const notes = Array.isArray(data) ? data : [];
 
   notesList.innerHTML = "";
+
+  if (notes.length === 0) {
+    notesList.innerHTML = "<p>No notes yet in this folder.</p>";
+    return;
+  }
 
   notes.forEach((note) => {
     const card = document.createElement("div");
@@ -113,6 +206,20 @@ async function fetchNotes() {
 
     notesList.appendChild(card);
   });
+}
+
+// DELETE NOTE
+async function deleteNote(noteID) {
+  const token = getToken();
+
+  await fetch(`${API_URL}/notes/${noteID}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  fetchNotes();
 }
 
 updateUI();
