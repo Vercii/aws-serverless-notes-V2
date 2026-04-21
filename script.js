@@ -70,6 +70,7 @@ function openFolder(folderID) {
   foldersSection.style.display = "none";
   notesSection.style.display = "block";
 
+  notesList.innerHTML = "";
   fetchNotes();
 }
 
@@ -100,7 +101,7 @@ addFolderForm.addEventListener("submit", async (e) => {
   const token = getToken();
   const name = document.getElementById("folderName").value;
 
-  await fetch(`${API_URL}/folders`, {
+  const res = await fetch(`${API_URL}/folders`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -109,12 +110,17 @@ addFolderForm.addEventListener("submit", async (e) => {
     body: JSON.stringify({ name }),
   });
 
+  if (!res.ok) {
+    alert("Failed to create folder");
+    return;
+  }
+
   addFolderForm.reset();
   fetchFolders();
 });
 
 // =========================
-// FETCH FOLDERS
+// FETCH FOLDERS (WITH RENAME + DELETE RESTORED)
 // =========================
 async function fetchFolders() {
   const token = getToken();
@@ -128,17 +134,79 @@ async function fetchFolders() {
 
   foldersList.innerHTML = "";
 
+  if (folders.length === 0) {
+    foldersList.innerHTML = "<p>No folders yet. Create one above.</p>";
+    return;
+  }
+
   folders.forEach((folder) => {
     const card = document.createElement("div");
     card.className = "note-card";
 
     card.innerHTML = `
       <h3>${folder.name}</h3>
-      <button class="open-btn">Open</button>
+      <div class="folder-actions">
+        <button class="open-btn">Open</button>
+        <button class="rename-btn">Rename</button>
+        <button class="delete-btn">Delete</button>
+      </div>
     `;
 
+    // OPEN
     card.querySelector(".open-btn").addEventListener("click", () => {
       openFolder(folder.folderID);
+    });
+
+    // RENAME
+    card.querySelector(".rename-btn").addEventListener("click", async () => {
+      const newName = prompt("Rename folder:", folder.name);
+      if (!newName) return;
+
+      const token = getToken();
+
+      const res = await fetch(`${API_URL}/folders/${folder.folderID}`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name: newName }),
+      });
+
+      if (!res.ok) {
+        alert("Failed to rename folder");
+        return;
+      }
+
+      fetchFolders();
+    });
+
+    // DELETE
+    card.querySelector(".delete-btn").addEventListener("click", async () => {
+      const confirmDelete = confirm(
+        "Delete this folder and all its notes?"
+      );
+      if (!confirmDelete) return;
+
+      const token = getToken();
+
+      const res = await fetch(`${API_URL}/folders/${folder.folderID}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!res.ok) {
+        alert("Failed to delete folder");
+        return;
+      }
+
+      if (currentFolderID === folder.folderID) {
+        currentFolderID = null;
+        notesSection.style.display = "none";
+        foldersSection.style.display = "block";
+      }
+
+      fetchFolders();
     });
 
     foldersList.appendChild(card);
@@ -146,7 +214,7 @@ async function fetchFolders() {
 }
 
 // =========================
-// ADD NOTE
+// CREATE NOTE
 // =========================
 addNoteForm.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -161,7 +229,7 @@ addNoteForm.addEventListener("submit", async (e) => {
   const title = document.getElementById("noteTitle").value;
   const content = document.getElementById("noteContent").value;
 
-  await fetch(`${API_URL}/notes`, {
+  const res = await fetch(`${API_URL}/notes`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -173,6 +241,11 @@ addNoteForm.addEventListener("submit", async (e) => {
       folderID: currentFolderID,
     }),
   });
+
+  if (!res.ok) {
+    alert("Failed to create note");
+    return;
+  }
 
   addNoteForm.reset();
   fetchNotes();
