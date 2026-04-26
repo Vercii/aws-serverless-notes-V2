@@ -50,7 +50,7 @@ function updateUI() {
 // =========================
 function handleLogin() {
   const clientId = "2ue45ahob50gej2u7vh4hdab7o";
-  const redirectUri = "https://main.d3i1c30pbgufzf.amplifyapp.com/callback.html";
+  const redirectUri = "https://main.d3i1c30pbgufzf.amplifyapp.com/files/callback.html";
   const domain = "https://us-east-1rq8auujwo.auth.us-east-1.amazoncognito.com";
 
   const url =
