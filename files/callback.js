@@ -1,4 +1,3 @@
-// callback.js
 window.onload = async () => {
   const params = new URLSearchParams(window.location.search);
   const code = params.get("code");
@@ -9,7 +8,6 @@ window.onload = async () => {
   }
 
   try {
-    // Send code to backend Lambda for secure token exchange
     const res = await fetch("https://fjwdttb11f.execute-api.us-east-1.amazonaws.com/exchange-code", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -24,11 +22,10 @@ window.onload = async () => {
       return;
     }
 
-    // Store the token in sessionStorage
     sessionStorage.setItem("id_token", data.id_token);
 
-    // Redirect back to main page
-    window.location.href = "index.html";
+    // IMPORTANT FIX: go back to ROOT index
+    window.location.href = "/index.html";
 
   } catch (err) {
     console.error(err);

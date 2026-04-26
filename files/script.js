@@ -20,9 +20,7 @@ function getToken() {
   return sessionStorage.getItem("id_token");
 }
 
-// =========================
-// UI STATE
-// =========================
+// UI
 function updateUI() {
   const token = getToken();
 
@@ -45,9 +43,7 @@ function updateUI() {
   }
 }
 
-// =========================
 // LOGIN
-// =========================
 function handleLogin() {
   const clientId = "2ue45ahob50gej2u7vh4hdab7o";
   const redirectUri = "https://main.d3i1c30pbgufzf.amplifyapp.com/files/callback.html";
@@ -61,9 +57,7 @@ function handleLogin() {
   window.location.href = url;
 }
 
-// =========================
-// NAVIGATION
-// =========================
+// NAV
 function openFolder(folderID) {
   currentFolderID = folderID;
 
@@ -80,9 +74,7 @@ backBtn.addEventListener("click", () => {
   foldersSection.style.display = "block";
 });
 
-// =========================
 // EVENTS
-// =========================
 loginBtn.addEventListener("click", handleLogin);
 landingLoginBtn.addEventListener("click", handleLogin);
 
@@ -92,16 +84,14 @@ logoutBtn.addEventListener("click", () => {
   updateUI();
 });
 
-// =========================
 // CREATE FOLDER
-// =========================
 addFolderForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const token = getToken();
   const name = document.getElementById("folderName").value;
 
-  const res = await fetch(`${API_URL}/folders`, {
+  await fetch(`${API_URL}/folders`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -110,18 +100,11 @@ addFolderForm.addEventListener("submit", async (e) => {
     body: JSON.stringify({ name }),
   });
 
-  if (!res.ok) {
-    alert("Failed to create folder");
-    return;
-  }
-
   addFolderForm.reset();
   fetchFolders();
 });
 
-// =========================
-// FETCH FOLDERS (WITH RENAME + DELETE RESTORED)
-// =========================
+// FETCH FOLDERS (WITH ACTIONS)
 async function fetchFolders() {
   const token = getToken();
 
@@ -133,11 +116,6 @@ async function fetchFolders() {
   const folders = Array.isArray(data) ? data : [];
 
   foldersList.innerHTML = "";
-
-  if (folders.length === 0) {
-    foldersList.innerHTML = "<p>No folders yet. Create one above.</p>";
-    return;
-  }
 
   folders.forEach((folder) => {
     const card = document.createElement("div");
@@ -152,19 +130,13 @@ async function fetchFolders() {
       </div>
     `;
 
-    // OPEN
-    card.querySelector(".open-btn").addEventListener("click", () => {
-      openFolder(folder.folderID);
-    });
+    card.querySelector(".open-btn").onclick = () => openFolder(folder.folderID);
 
-    // RENAME
-    card.querySelector(".rename-btn").addEventListener("click", async () => {
+    card.querySelector(".rename-btn").onclick = async () => {
       const newName = prompt("Rename folder:", folder.name);
       if (!newName) return;
 
-      const token = getToken();
-
-      const res = await fetch(`${API_URL}/folders/${folder.folderID}`, {
+      await fetch(`${API_URL}/folders/${folder.folderID}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -173,106 +145,63 @@ async function fetchFolders() {
         body: JSON.stringify({ name: newName }),
       });
 
-      if (!res.ok) {
-        alert("Failed to rename folder");
-        return;
-      }
-
       fetchFolders();
-    });
+    };
 
-    // DELETE
-    card.querySelector(".delete-btn").addEventListener("click", async () => {
-      const confirmDelete = confirm(
-        "Delete this folder and all its notes?"
-      );
-      if (!confirmDelete) return;
+    card.querySelector(".delete-btn").onclick = async () => {
+      if (!confirm("Delete this folder and all its notes?")) return;
 
-      const token = getToken();
-
-      const res = await fetch(`${API_URL}/folders/${folder.folderID}`, {
+      await fetch(`${API_URL}/folders/${folder.folderID}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      if (!res.ok) {
-        alert("Failed to delete folder");
-        return;
-      }
-
-      if (currentFolderID === folder.folderID) {
-        currentFolderID = null;
-        notesSection.style.display = "none";
-        foldersSection.style.display = "block";
-      }
-
       fetchFolders();
-    });
+    };
 
     foldersList.appendChild(card);
   });
 }
 
-// =========================
-// CREATE NOTE
-// =========================
+// NOTES
 addNoteForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   if (!currentFolderID) {
-    alert("Please select a folder first.");
+    alert("Select a folder first.");
     return;
   }
 
   const token = getToken();
 
-  const title = document.getElementById("noteTitle").value;
-  const content = document.getElementById("noteContent").value;
+  const title = noteTitle.value;
+  const content = noteContent.value;
 
-  const res = await fetch(`${API_URL}/notes`, {
+  await fetch(`${API_URL}/notes`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      title,
-      content,
-      folderID: currentFolderID,
-    }),
+    body: JSON.stringify({ title, content, folderID: currentFolderID }),
   });
-
-  if (!res.ok) {
-    alert("Failed to create note");
-    return;
-  }
 
   addNoteForm.reset();
   fetchNotes();
 });
 
-// =========================
 // FETCH NOTES
-// =========================
 async function fetchNotes() {
   const token = getToken();
-
-  if (!currentFolderID) return;
 
   const res = await fetch(
     `${API_URL}/notes?folderID=${currentFolderID}`,
     { headers: { Authorization: `Bearer ${token}` } }
   );
 
-  const data = await res.json();
-  const notes = Array.isArray(data) ? data : [];
+  const notes = await res.json();
 
   notesList.innerHTML = "";
-
-  if (notes.length === 0) {
-    notesList.innerHTML = "<p>No notes yet.</p>";
-    return;
-  }
 
   notes.forEach((note) => {
     const card = document.createElement("div");
@@ -285,16 +214,14 @@ async function fetchNotes() {
       <button class="delete-btn">Delete</button>
     `;
 
-    card.querySelector(".delete-btn").addEventListener("click", async () => {
-      const token = getToken();
-
+    card.querySelector(".delete-btn").onclick = async () => {
       await fetch(`${API_URL}/notes/${note.noteID}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
 
       fetchNotes();
-    });
+    };
 
     notesList.appendChild(card);
   });
