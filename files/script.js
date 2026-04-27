@@ -12,6 +12,14 @@ const addFolderForm = document.getElementById("addFolderForm");
 
 const backBtn = document.getElementById("backBtn");
 
+// MODAL
+const noteModal = document.getElementById("noteModal");
+const modalTitle = document.getElementById("modalTitle");
+const modalContent = document.getElementById("modalContent");
+const saveNoteBtn = document.getElementById("saveNoteBtn");
+const closeModalBtn = document.getElementById("closeModalBtn");
+
+let activeNoteID = null;
 let currentFolderID = null;
 
 const API_URL = "https://fjwdttb11f.execute-api.us-east-1.amazonaws.com";
@@ -20,7 +28,9 @@ function getToken() {
   return sessionStorage.getItem("id_token");
 }
 
-// UI
+// =========================
+// UI STATE
+// =========================
 function updateUI() {
   const token = getToken();
 
@@ -43,7 +53,9 @@ function updateUI() {
   }
 }
 
+// =========================
 // LOGIN
+// =========================
 function handleLogin() {
   const clientId = "2ue45ahob50gej2u7vh4hdab7o";
   const redirectUri = "https://main.d3i1c30pbgufzf.amplifyapp.com/files/callback.html";
@@ -57,7 +69,9 @@ function handleLogin() {
   window.location.href = url;
 }
 
-// NAV
+// =========================
+// NAVIGATION
+// =========================
 function openFolder(folderID) {
   currentFolderID = folderID;
 
@@ -74,7 +88,9 @@ backBtn.addEventListener("click", () => {
   foldersSection.style.display = "block";
 });
 
+// =========================
 // EVENTS
+// =========================
 loginBtn.addEventListener("click", handleLogin);
 landingLoginBtn.addEventListener("click", handleLogin);
 
@@ -84,7 +100,9 @@ logoutBtn.addEventListener("click", () => {
   updateUI();
 });
 
+// =========================
 // CREATE FOLDER
+// =========================
 addFolderForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -104,7 +122,9 @@ addFolderForm.addEventListener("submit", async (e) => {
   fetchFolders();
 });
 
-// FETCH FOLDERS (WITH ACTIONS)
+// =========================
+// FETCH FOLDERS
+// =========================
 async function fetchFolders() {
   const token = getToken();
 
@@ -130,7 +150,8 @@ async function fetchFolders() {
       </div>
     `;
 
-    card.querySelector(".open-btn").onclick = () => openFolder(folder.folderID);
+    card.querySelector(".open-btn").onclick = () =>
+      openFolder(folder.folderID);
 
     card.querySelector(".rename-btn").onclick = async () => {
       const newName = prompt("Rename folder:", folder.name);
@@ -163,7 +184,9 @@ async function fetchFolders() {
   });
 }
 
-// NOTES
+// =========================
+// CREATE NOTE
+// =========================
 addNoteForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -190,7 +213,9 @@ addNoteForm.addEventListener("submit", async (e) => {
   fetchNotes();
 });
 
+// =========================
 // FETCH NOTES
+// =========================
 async function fetchNotes() {
   const token = getToken();
 
@@ -209,12 +234,18 @@ async function fetchNotes() {
 
     card.innerHTML = `
       <h3>${note.title}</h3>
-      <p>${note.content}</p>
+      <p class="note-preview">${note.content}</p>
       <small>${new Date(note.timestamp).toLocaleString()}</small>
       <button class="delete-btn">Delete</button>
     `;
 
-    card.querySelector(".delete-btn").onclick = async () => {
+    // OPEN MODAL
+    card.onclick = () => openNoteModal(note);
+
+    // DELETE
+    card.querySelector(".delete-btn").onclick = async (e) => {
+      e.stopPropagation();
+
       await fetch(`${API_URL}/notes/${note.noteID}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
@@ -226,5 +257,40 @@ async function fetchNotes() {
     notesList.appendChild(card);
   });
 }
+
+// =========================
+// MODAL
+// =========================
+function openNoteModal(note) {
+  activeNoteID = note.noteID;
+
+  modalTitle.value = note.title;
+  modalContent.value = note.content;
+
+  noteModal.style.display = "flex";
+}
+
+closeModalBtn.onclick = () => {
+  noteModal.style.display = "none";
+};
+
+saveNoteBtn.onclick = async () => {
+  const token = getToken();
+
+  await fetch(`${API_URL}/notes/${activeNoteID}`, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: modalTitle.value,
+      content: modalContent.value,
+    }),
+  });
+
+  noteModal.style.display = "none";
+  fetchNotes();
+};
 
 updateUI();
