@@ -39,3 +39,8 @@ AWS Amplify was used for frontend hosting due to its built-in CI/CD pipeline, au
 ### DynamoDB vs RDS
 
 Amazon DynamoDB was selected because the application uses a simple access pattern (user → notes). DynamoDB’s serverless nature and high scalability make it ideal for this use case, whereas RDS would be better suited for applications requiring complex relational queries.
+
+---
+
+## Architecture Diagram
+![Screenshot](/assets/aws-serverless-notes-architecture.jpg)
