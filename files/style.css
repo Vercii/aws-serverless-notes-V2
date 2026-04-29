@@ -96,22 +96,22 @@ body.dark .secondary-btn {
   background: white;
   padding: 1rem;
   border-radius: 10px;
-  text-align: center;
-  cursor: pointer;
-  height: 100px;
+  height: 120px;
 
   display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
 
-  transition: transform 0.15s, box-shadow 0.15s;
+  text-align: center;
 }
 
 body.dark .note-card {
   background: #1e293b;
 }
 
-.note-card:hover {
+/* only notes should have hover */
+#notesList .note-card:hover {
   transform: translateY(-4px) scale(1.02);
   box-shadow: 0 10px 25px rgba(0,0,0,0.15);
 }
@@ -190,8 +190,9 @@ body.dark .modal-content {
 /* FOLDER ACTION BUTTONS */
 .folder-actions {
   display: flex;
+  width: 100%;
   gap: 0.5rem;
-  margin-top: 0.5rem;
+  justify-content: space-between;
 }
 
 /* Make buttons fit nicely inside cards */
@@ -217,4 +218,14 @@ body.dark .modal-content {
 /* DARK MODE FIX */
 body.dark .delete-btn {
   background: #ef4444;
+}
+
+/* FOLDER TITLE */
+.note-card h3 {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+  text-align: center;
 }
