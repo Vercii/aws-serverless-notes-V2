@@ -1,12 +1,29 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: 'Segoe UI', sans-serif;
   background: #eef2f7;
   margin: 0;
   color: #1e293b;
-  box-sizing: border-box;
+  transition: 0.3s;
 }
 
-/* HEADER FIX */
+/* DARK MODE */
+body.dark {
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+body.dark .note-card,
+body.dark .add-note-card,
+body.dark .modal-content {
+  background: #1e293b;
+  color: white;
+}
+
+/* HEADER */
 header {
   background: #1e293b;
   color: white;
@@ -16,44 +33,55 @@ header {
   align-items: center;
 }
 
-h1 {
-  margin: 0;
-  line-height: 1;
-}
-
 /* BUTTONS */
 button {
   border: none;
   border-radius: 6px;
   padding: 0.5rem 1rem;
   cursor: pointer;
-  height: 36px; /* ensures consistent button height */
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
 }
 
-/* LOGIN / LOGOUT */
-#loginBtn { background: #1e293b; color: white; }
-#logoutBtn { background: #ef4444; color: white; }
-
-/* MAIN */
-main {
-  max-width: 1100px;
-  margin: auto;
-  padding: 2rem;
+/* GRID */
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
 }
 
-/* LANDING */
-.landing {
-  height: 70vh;
+/* CARD */
+.note-card {
+  background: white;
+  padding: 1rem;
+  border-radius: 10px;
+  height: 110px;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
+  overflow: hidden;
+
+  cursor: pointer;
+  transition: 0.15s;
 }
 
-/* FORM CARD */
+.folder-card {
+  cursor: default;
+}
+
+.note-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+/* TEXT FIX */
+.note-card h3 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-break: break-word;
+}
+
+/* FORM */
 .add-note-card {
   background: white;
   padding: 1.5rem;
@@ -61,145 +89,50 @@ main {
   margin-bottom: 2rem;
 }
 
-/* =========================
-   FIX #2 + #3 (FOLDER FORM)
-   ========================= */
+#addNoteForm,
 #addFolderForm {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem; /* spacing between input and button */
-}
-
-#addFolderForm input {
-  width: 100%;
-  padding: 0.6rem;
-  border-radius: 6px;
-  border: 1px solid #cbd5e1;
-  box-sizing: border-box; /* prevents overflow/overlap */
-}
-
-/* Folder submit button spacing consistency */
-#addFolderForm button {
-  background: #1e293b;
-  color: white;
-}
-
-/* NOTE GRID */
-.notes-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-}
-
-/* NOTE CARD */
-.note-card {
-  background: white;
-  padding: 1rem;
-  border-radius: 10px;
-}
-
-/* NOTE FORM STACK FIX */
-#addNoteForm {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
 }
 
 input, textarea {
-  width: 100%;
   padding: 0.6rem;
   border-radius: 6px;
   border: 1px solid #cbd5e1;
-  box-sizing: border-box;
 }
 
-/* BUTTON FULL WIDTH (notes form) */
-form button {
-  background: #1e293b;
-  color: white;
-  width: 100%;
-}
-
-/* DELETE NOTE BUTTON */
-.delete-btn {
-  margin-top: 0.5rem;
-  background: #ef4444;
-  color: white;
-}
-
-/* =========================
-   FIX #1 (FOLDER ACTION BUTTONS)
-   ========================= */
+/* FOLDER ACTIONS */
 .folder-actions {
   display: flex;
   gap: 0.5rem;
   margin-top: 0.5rem;
-  align-items: stretch;
 }
 
-/* Make ALL folder buttons equal height */
 .folder-actions button {
+  flex: 1;
   font-size: 0.8rem;
-  padding: 0.4rem 0.6rem;
-  height: 32px;
-  flex: 1; /* equal width buttons */
-}
-
-/* IMPORTANT: remove old mismatch behavior */
-.folder-actions .delete-btn {
-  margin-top: 0; /* FIX: was causing misalignment */
-}
-
-/* FIX LONG TEXT BREAKING UI */
-.note-card p {
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  white-space: pre-wrap;
-}
-
-/* CLAMP PREVIEW TEXT */
-.note-preview {
-  display: -webkit-box;
-  -webkit-line-clamp: 3; /* show only 3 lines */
-  line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
 /* MODAL */
 .modal {
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background: rgba(0,0,0,0.5);
-  display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
 }
 
 .modal-content {
   background: white;
-  padding: 1.5rem;
+  padding: 2rem;
   border-radius: 10px;
-  width: 90%;
-  max-width: 600px;
+  width: 400px;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-}
-
-.modal-content textarea {
-  height: 200px;
-  resize: vertical;
-}
-
-.modal-actions {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.modal-actions button {
-  flex: 1;
 }

@@ -8,74 +8,74 @@
 </head>
 <body>
 
-  <header>
-    <h1>Serverless Notes</h1>
-    <div>
-      <button id="loginBtn">Login</button>
-      <button id="logoutBtn" style="display:none">Logout</button>
-    </div>
-  </header>
-
-  <main>
-
-    <section id="landingSection" class="landing">
-      <div class="landing-content">
-        <h2>Simple. Secure. Serverless Notes.</h2>
-        <p>Store your notes in the cloud with a fast serverless architecture.</p>
-        <button id="landingLoginBtn">Sign up / Log in</button>
-      </div>
-    </section>
-
-    <section id="foldersSection" style="display:none">
-
-      <div class="add-note-card">
-        <h2>Create Folder</h2>
-        <form id="addFolderForm">
-          <input type="text" id="folderName" placeholder="Folder Name" required>
-          <button type="submit">Create Folder</button>
-        </form>
-      </div>
-
-      <h2>Your Folders</h2>
-      <div id="foldersList" class="notes-grid"></div>
-
-    </section>
-
-    <section id="notesSection" style="display:none">
-
-      <button id="backBtn">← Back to Folders</button>
-
-      <div class="add-note-card">
-        <h2>Add Note</h2>
-
-        <form id="addNoteForm">
-          <input type="text" id="noteTitle" placeholder="Title" required>
-          <textarea id="noteContent" placeholder="Content" required></textarea>
-          <button type="submit">Add Note</button>
-        </form>
-
-      </div>
-
-      <h2>Your Notes</h2>
-      <div id="notesList" class="notes-grid"></div>
-
-    </section>
-
-  </main>
-
-    <!-- NOTE MODAL -->
-  <div id="noteModal" class="modal" style="display:none">
-    <div class="modal-content">
-      <input type="text" id="modalTitle" />
-      <textarea id="modalContent"></textarea>
-
-      <div class="modal-actions">
-        <button id="saveNoteBtn">Save</button>
-        <button id="closeModalBtn">Close</button>
-      </div>
-    </div>
+<header>
+  <h1>Serverless Notes</h1>
+  <div>
+    <button id="themeToggle">🌙</button>
+    <button id="loginBtn">Login</button>
+    <button id="logoutBtn" style="display:none">Logout</button>
   </div>
+</header>
 
-  <script src="/files/script.js"></script>
+<main>
+
+  <!-- LANDING -->
+  <section id="landingSection" class="landing">
+    <div class="landing-content">
+      <h2>Simple. Secure. Serverless Notes.</h2>
+      <p>Store your notes in the cloud with a fast serverless architecture.</p>
+      <button id="landingLoginBtn">Sign up / Log in</button>
+    </div>
+  </section>
+
+  <!-- FOLDERS -->
+  <section id="foldersSection" style="display:none">
+
+    <div class="add-note-card">
+      <h2>Create Folder</h2>
+      <form id="addFolderForm">
+        <input type="text" id="folderName" maxlength="20" placeholder="Folder Name" required>
+        <button type="submit">Create Folder</button>
+      </form>
+    </div>
+
+    <h2>Your Folders</h2>
+    <div id="foldersList" class="notes-grid"></div>
+
+  </section>
+
+  <!-- NOTES -->
+  <section id="notesSection" style="display:none">
+
+    <button id="backBtn">← Back to Folders</button>
+
+    <div class="add-note-card">
+      <h2>Add Note</h2>
+      <form id="addNoteForm">
+        <input type="text" id="noteTitle" placeholder="Title" required>
+        <textarea id="noteContent" placeholder="Content" required></textarea>
+        <button type="submit">Add Note</button>
+      </form>
+    </div>
+
+    <h2>Your Notes</h2>
+    <div id="notesList" class="notes-grid"></div>
+
+  </section>
+
+</main>
+
+<!-- MODAL -->
+<div id="noteModal" class="modal">
+  <div class="modal-content">
+    <h2>Edit Note</h2>
+    <input type="text" id="modalTitle">
+    <textarea id="modalContent"></textarea>
+    <button id="saveNoteBtn">Save</button>
+    <button id="closeModalBtn">Close</button>
+  </div>
+</div>
+
+<script src="/files/script.js"></script>
 </body>
 </html>
