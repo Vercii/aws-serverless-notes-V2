@@ -186,3 +186,35 @@ input, textarea {
 body.dark .modal-content {
   background: #1e293b;
 }
+
+/* FOLDER ACTION BUTTONS */
+.folder-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+/* Make buttons fit nicely inside cards */
+.folder-actions button {
+  flex: 1;
+  font-size: 0.75rem;
+  padding: 0.4rem;
+}
+
+/* DELETE BUTTON (keep consistent red style) */
+.delete-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background: #dc2626;
+}
+
+/* DARK MODE FIX */
+body.dark .delete-btn {
+  background: #ef4444;
+}

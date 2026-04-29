@@ -169,12 +169,11 @@ async function fetchFolders() {
     card.innerHTML = `
       <h3>${folder.name}</h3>
       <div class="folder-actions">
-        <button class="open-btn">Open</button>
-        <button class="rename-btn">Rename</button>
+        <button class="primary-btn open-btn">Open</button>
+        <button class="secondary-btn rename-btn">Rename</button>
         <button class="delete-btn">Delete</button>
       </div>
     `;
-
     card.querySelector(".open-btn").onclick = () =>
       openFolder(folder.folderID);
 
