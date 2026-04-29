@@ -11,60 +11,53 @@
 <header>
   <h1>Serverless Notes</h1>
   <div class="nav-actions">
-    <button id="themeToggle">[D]</button>
-    <button id="loginBtn" class="nav-btn">Login</button>
+    <button id="themeToggle" class="nav-btn">☾</button>
+    <button id="loginBtn" class="nav-link">Login</button>
     <button id="logoutBtn" class="nav-btn" style="display:none">Logout</button>
   </div>
 </header>
 
-<main>
+<main class="container">
 
-  <!-- LANDING -->
   <section id="landingSection" class="landing">
-    <div class="container landing-content">
+    <div class="landing-content">
       <h2>Simple. Secure. Serverless Notes.</h2>
       <p>Store your notes in the cloud with a fast serverless architecture.</p>
-      <button id="landingLoginBtn">Sign up / Log in</button>
+      <button id="landingLoginBtn" class="primary-btn">Sign up / Log in</button>
     </div>
   </section>
 
-  <!-- FOLDERS -->
   <section id="foldersSection" style="display:none">
-    <div class="container">
 
-      <div class="add-note-card">
-        <h2>Create Folder</h2>
-        <form id="addFolderForm">
-          <input type="text" id="folderName" maxlength="20" placeholder="Folder Name" required>
-          <button type="submit">Create Folder</button>
-        </form>
-      </div>
-
-      <h2>Your Folders</h2>
-      <div id="foldersList" class="notes-grid"></div>
-
+    <div class="add-note-card">
+      <h2>Create Folder</h2>
+      <form id="addFolderForm">
+        <input type="text" id="folderName" maxlength="20" required>
+        <button class="primary-btn">Create Folder</button>
+      </form>
     </div>
+
+    <h2>Your Folders</h2>
+    <div id="foldersList" class="notes-grid"></div>
+
   </section>
 
-  <!-- NOTES -->
   <section id="notesSection" style="display:none">
-    <div class="container">
 
-      <button id="backBtn">← Back to Folders</button>
+    <button id="backBtn" class="secondary-btn">← Back</button>
 
-      <div class="add-note-card">
-        <h2>Add Note</h2>
-        <form id="addNoteForm">
-          <input type="text" id="noteTitle" placeholder="Title" required>
-          <textarea id="noteContent" placeholder="Content" required></textarea>
-          <button type="submit">Add Note</button>
-        </form>
-      </div>
-
-      <h2>Your Notes</h2>
-      <div id="notesList" class="notes-grid"></div>
-
+    <div class="add-note-card">
+      <h2>Add Note</h2>
+      <form id="addNoteForm">
+        <input type="text" id="noteTitle" required>
+        <textarea id="noteContent" required></textarea>
+        <button class="primary-btn">Add Note</button>
+      </form>
     </div>
+
+    <h2>Your Notes</h2>
+    <div id="notesList" class="notes-grid"></div>
+
   </section>
 
 </main>
@@ -75,8 +68,8 @@
     <h2>Edit Note</h2>
     <input type="text" id="modalTitle">
     <textarea id="modalContent"></textarea>
-    <button id="saveNoteBtn">Save</button>
-    <button id="closeModalBtn">Close</button>
+    <button id="saveNoteBtn" class="primary-btn">Save</button>
+    <button id="closeModalBtn" class="secondary-btn">Close</button>
   </div>
 </div>
 

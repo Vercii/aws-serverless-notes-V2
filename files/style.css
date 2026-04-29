@@ -1,20 +1,9 @@
-* {
-  box-sizing: border-box;
-}
-
 body {
   font-family: 'Segoe UI', sans-serif;
   background: #eef2f7;
   margin: 0;
   color: #1e293b;
-  transition: 0.3s;
-}
-
-/* CONTAINER (FIXES YOUR MAIN ISSUE) */
-.container {
-  max-width: 1100px;
-  margin: auto;
-  padding: 2rem;
+  transition: all 0.3s;
 }
 
 /* DARK MODE */
@@ -23,46 +12,117 @@ body.dark {
   color: #e2e8f0;
 }
 
-/* HEADER */
+/* NAVBAR */
 header {
-  background: #1e293b;
-  color: white;
+  background: white;
+  color: #1e293b;
   padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 body.dark header {
-  background: #020617;
-  color: #e2e8f0;
+  background: #1e293b;
+  color: white;
 }
 
-/* NAV BUTTONS (TEXT STYLE) */
+/* CONTAINER */
+.container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 2rem;
+}
+
+/* NAV BUTTONS */
 .nav-actions {
   display: flex;
   gap: 1rem;
 }
 
-.nav-btn,
-#themeToggle {
-  background: none;
+.nav-btn {
+  background: transparent;
   border: none;
-  color: inherit;
   cursor: pointer;
-  font-size: 0.95rem;
+  font-size: 1rem;
+  color: inherit;
 }
 
-/* LANDING */
-.landing {
-  height: 70vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+.nav-link {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  color: inherit;
+}
+
+/* BUTTON STYLES */
+.primary-btn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.primary-btn:hover {
+  background: #1d4ed8;
+}
+
+.secondary-btn {
+  background: #e2e8f0;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+body.dark .secondary-btn {
+  background: #334155;
+  color: white;
+}
+
+/* GRID */
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
 }
 
 /* CARDS */
+.note-card {
+  background: white;
+  padding: 1rem;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+  height: 100px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+body.dark .note-card {
+  background: #1e293b;
+}
+
+.note-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.note-card h3 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* FORM */
 .add-note-card {
   background: white;
   padding: 1.5rem;
@@ -74,52 +134,6 @@ body.dark .add-note-card {
   background: #1e293b;
 }
 
-/* GRID (NO FULL STRETCH ANYMORE) */
-.notes-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-}
-
-/* NOTE CARD */
-.note-card {
-  background: white;
-  padding: 1rem;
-  border-radius: 10px;
-  height: 110px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-
-  cursor: pointer;
-  transition: 0.15s;
-}
-
-body.dark .note-card {
-  background: #1e293b;
-}
-
-/* FOLDER CARD */
-.folder-card {
-  cursor: default;
-}
-
-/* HOVER ANIMATION */
-.note-card:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-}
-
-/* TEXT TRUNCATION */
-.note-card h3 {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* FORMS */
 #addNoteForm,
 #addFolderForm {
   display: flex;
@@ -131,6 +145,19 @@ input, textarea {
   padding: 0.6rem;
   border-radius: 6px;
   border: 1px solid #cbd5e1;
+}
+
+/* LANDING */
+.landing {
+  height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.landing-content {
+  max-width: 500px;
+  text-align: center;
 }
 
 /* MODAL */
