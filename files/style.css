@@ -10,17 +10,17 @@ body {
   transition: 0.3s;
 }
 
+/* CONTAINER (FIXES YOUR MAIN ISSUE) */
+.container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 2rem;
+}
+
 /* DARK MODE */
 body.dark {
   background: #0f172a;
   color: #e2e8f0;
-}
-
-body.dark .note-card,
-body.dark .add-note-card,
-body.dark .modal-content {
-  background: #1e293b;
-  color: white;
 }
 
 /* HEADER */
@@ -33,55 +33,36 @@ header {
   align-items: center;
 }
 
-/* BUTTONS */
-button {
-  border: none;
-  border-radius: 6px;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
+body.dark header {
+  background: #020617;
+  color: #e2e8f0;
 }
 
-/* GRID */
-.notes-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+/* NAV BUTTONS (TEXT STYLE) */
+.nav-actions {
+  display: flex;
   gap: 1rem;
 }
 
-/* CARD */
-.note-card {
-  background: white;
-  padding: 1rem;
-  border-radius: 10px;
-  height: 110px;
+.nav-btn,
+#themeToggle {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+/* LANDING */
+.landing {
+  height: 70vh;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  overflow: hidden;
-
-  cursor: pointer;
-  transition: 0.15s;
 }
 
-.folder-card {
-  cursor: default;
-}
-
-.note-card:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-}
-
-/* TEXT FIX */
-.note-card h3 {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  word-break: break-word;
-}
-
-/* FORM */
+/* CARDS */
 .add-note-card {
   background: white;
   padding: 1.5rem;
@@ -89,6 +70,56 @@ button {
   margin-bottom: 2rem;
 }
 
+body.dark .add-note-card {
+  background: #1e293b;
+}
+
+/* GRID (NO FULL STRETCH ANYMORE) */
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+/* NOTE CARD */
+.note-card {
+  background: white;
+  padding: 1rem;
+  border-radius: 10px;
+  height: 110px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+body.dark .note-card {
+  background: #1e293b;
+}
+
+/* FOLDER CARD */
+.folder-card {
+  cursor: default;
+}
+
+/* HOVER ANIMATION */
+.note-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+/* TEXT TRUNCATION */
+.note-card h3 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* FORMS */
 #addNoteForm,
 #addFolderForm {
   display: flex;
@@ -100,18 +131,6 @@ input, textarea {
   padding: 0.6rem;
   border-radius: 6px;
   border: 1px solid #cbd5e1;
-}
-
-/* FOLDER ACTIONS */
-.folder-actions {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-}
-
-.folder-actions button {
-  flex: 1;
-  font-size: 0.8rem;
 }
 
 /* MODAL */
@@ -135,4 +154,8 @@ input, textarea {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+}
+
+body.dark .modal-content {
+  background: #1e293b;
 }

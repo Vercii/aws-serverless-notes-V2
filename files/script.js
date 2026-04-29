@@ -13,14 +13,12 @@ const addNoteForm = document.getElementById("addNoteForm");
 const backBtn = document.getElementById("backBtn");
 const landingLoginBtn = document.getElementById("landingLoginBtn");
 
-// MODAL
 const noteModal = document.getElementById("noteModal");
 const modalTitle = document.getElementById("modalTitle");
 const modalContent = document.getElementById("modalContent");
 const saveNoteBtn = document.getElementById("saveNoteBtn");
 const closeModalBtn = document.getElementById("closeModalBtn");
 
-// THEME
 const themeToggle = document.getElementById("themeToggle");
 
 let currentFolderID = null;
@@ -32,7 +30,7 @@ function getToken() {
   return sessionStorage.getItem("id_token");
 }
 
-/* ================= UI ================= */
+/* UI */
 function updateUI() {
   const token = getToken();
 
@@ -52,7 +50,7 @@ function updateUI() {
   }
 }
 
-/* ================= LOGIN ================= */
+/* LOGIN */
 function handleLogin() {
   const clientId = "2ue45ahob50gej2u7vh4hdab7o";
   const redirectUri = "https://main.d3i1c30pbgufzf.amplifyapp.com/files/callback.html";
@@ -64,7 +62,7 @@ function handleLogin() {
     `&scope=openid+email+profile`;
 }
 
-/* ================= NAV ================= */
+/* NAV */
 function openFolder(folderID) {
   currentFolderID = folderID;
   foldersSection.style.display = "none";
@@ -78,7 +76,7 @@ backBtn.onclick = () => {
   foldersSection.style.display = "block";
 };
 
-/* ================= EVENTS ================= */
+/* EVENTS */
 loginBtn.onclick = handleLogin;
 landingLoginBtn.onclick = handleLogin;
 
@@ -87,19 +85,19 @@ logoutBtn.onclick = () => {
   updateUI();
 };
 
-/* ================= THEME ================= */
+/* THEME */
 themeToggle.onclick = () => {
   const isDark = document.body.classList.toggle("dark");
-  themeToggle.textContent = isDark ? "☀️" : "🌙";
+  themeToggle.textContent = isDark ? "[L]" : "[D]";
   localStorage.setItem("theme", isDark ? "dark" : "light");
 };
 
 if (localStorage.getItem("theme") === "dark") {
   document.body.classList.add("dark");
-  themeToggle.textContent = "☀️";
+  themeToggle.textContent = "[L]";
 }
 
-/* ================= FOLDERS ================= */
+/* FOLDERS */
 addFolderForm.onsubmit = async (e) => {
   e.preventDefault();
 
@@ -179,7 +177,7 @@ async function fetchFolders() {
   });
 }
 
-/* ================= NOTES ================= */
+/* NOTES */
 addNoteForm.onsubmit = async (e) => {
   e.preventDefault();
 
@@ -218,14 +216,13 @@ async function fetchNotes() {
     card.className = "note-card";
 
     card.innerHTML = `<h3>${note.title}</h3>`;
-
     card.onclick = () => openNoteModal(note);
 
     notesList.appendChild(card);
   });
 }
 
-/* ================= MODAL ================= */
+/* MODAL */
 function openNoteModal(note) {
   activeNoteID = note.noteID;
   modalTitle.value = note.title;
