@@ -91,11 +91,14 @@ body.dark .secondary-btn {
   gap: 1rem;
 }
 
-/* CARDS */
+/* =========================
+   NOTE CARDS (UPDATED BEHAVIOR)
+   ========================= */
 .note-card {
   background: white;
   padding: 1rem;
   border-radius: 10px;
+
   height: 120px;
 
   display: flex;
@@ -104,22 +107,79 @@ body.dark .secondary-btn {
   align-items: center;
 
   text-align: center;
+
+  transition: none; /* hover removed */
 }
 
+/* DARK MODE */
 body.dark .note-card {
   background: #1e293b;
 }
 
-/* only notes should have hover */
+/* REMOVE HOVER EFFECT COMPLETELY */
 #notesList .note-card:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  transform: none;
+  box-shadow: none;
 }
 
+/* TITLE */
 .note-card h3 {
+  margin: 0;
+  width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  text-align: center;
+}
+
+/* =========================
+   NOTE ACTION BUTTONS
+   ========================= */
+.note-actions {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.note-actions button {
+  flex: 1;
+  font-size: 0.75rem;
+  padding: 0.4rem;
+}
+
+/* =========================
+   FOLDER SECTION (UNCHANGED)
+   ========================= */
+.folder-actions {
+  display: flex;
+  width: 100%;
+  gap: 0.5rem;
+  justify-content: space-between;
+}
+
+.folder-actions button {
+  flex: 1;
+  font-size: 0.75rem;
+  padding: 0.4rem;
+}
+
+/* DELETE BUTTON */
+.delete-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background: #dc2626;
+}
+
+/* DARK MODE DELETE */
+body.dark .delete-btn {
+  background: #ef4444;
 }
 
 /* FORM */
@@ -185,47 +245,4 @@ input, textarea {
 
 body.dark .modal-content {
   background: #1e293b;
-}
-
-/* FOLDER ACTION BUTTONS */
-.folder-actions {
-  display: flex;
-  width: 100%;
-  gap: 0.5rem;
-  justify-content: space-between;
-}
-
-/* Make buttons fit nicely inside cards */
-.folder-actions button {
-  flex: 1;
-  font-size: 0.75rem;
-  padding: 0.4rem;
-}
-
-/* DELETE BUTTON (keep consistent red style) */
-.delete-btn {
-  background: #ef4444;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.delete-btn:hover {
-  background: #dc2626;
-}
-
-/* DARK MODE FIX */
-body.dark .delete-btn {
-  background: #ef4444;
-}
-
-/* FOLDER TITLE */
-.note-card h3 {
-  margin: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: 100%;
-  text-align: center;
 }

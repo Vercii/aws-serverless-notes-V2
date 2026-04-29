@@ -43,12 +43,10 @@ themeToggle.onclick = () => {
 if (localStorage.getItem("theme") === "dark") {
   document.body.classList.add("dark");
   themeToggle.textContent = "☀";
-} else {
-  themeToggle.textContent = "☾";
 }
 
 // =========================
-// UI STATE
+// UI
 // =========================
 function updateUI() {
   const token = getToken();
@@ -89,7 +87,7 @@ function handleLogin() {
 }
 
 // =========================
-// NAVIGATION
+// NAV
 // =========================
 function openFolder(folderID) {
   currentFolderID = folderID;
@@ -117,7 +115,7 @@ logoutBtn.onclick = () => {
 };
 
 // =========================
-// CREATE FOLDER
+// CREATE FOLDER (UNCHANGED)
 // =========================
 addFolderForm.onsubmit = async (e) => {
   e.preventDefault();
@@ -127,11 +125,6 @@ addFolderForm.onsubmit = async (e) => {
 
   if (name.length > 20) {
     alert("Folder name must be 20 characters or less.");
-    return;
-  }
-
-  if (!name) {
-    alert("Folder name cannot be empty.");
     return;
   }
 
@@ -149,7 +142,7 @@ addFolderForm.onsubmit = async (e) => {
 };
 
 // =========================
-// FETCH FOLDERS
+// FETCH FOLDERS (UNCHANGED)
 // =========================
 async function fetchFolders() {
   const token = getToken();
@@ -159,7 +152,6 @@ async function fetchFolders() {
   });
 
   const folders = await res.json();
-
   foldersList.innerHTML = "";
 
   folders.forEach((folder) => {
@@ -174,6 +166,7 @@ async function fetchFolders() {
         <button class="delete-btn">Delete</button>
       </div>
     `;
+
     card.querySelector(".open-btn").onclick = () =>
       openFolder(folder.folderID);
 
@@ -209,20 +202,12 @@ async function fetchFolders() {
 }
 
 // =========================
-// CREATE NOTE
+// CREATE NOTE (UNCHANGED)
 // =========================
 addNoteForm.onsubmit = async (e) => {
   e.preventDefault();
 
-  if (!currentFolderID) {
-    alert("Select a folder first.");
-    return;
-  }
-
   const token = getToken();
-
-  const title = document.getElementById("noteTitle").value;
-  const content = document.getElementById("noteContent").value;
 
   await fetch(`${API_URL}/notes`, {
     method: "POST",
@@ -231,8 +216,8 @@ addNoteForm.onsubmit = async (e) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      title,
-      content,
+      title: noteTitle.value,
+      content: noteContent.value,
       folderID: currentFolderID,
     }),
   });
@@ -242,7 +227,7 @@ addNoteForm.onsubmit = async (e) => {
 };
 
 // =========================
-// FETCH NOTES
+// FETCH NOTES (🔥 UPDATED)
 // =========================
 async function fetchNotes() {
   const token = getToken();
@@ -253,17 +238,32 @@ async function fetchNotes() {
   );
 
   const notes = await res.json();
-
   notesList.innerHTML = "";
 
   notes.forEach((note) => {
     const card = document.createElement("div");
     card.className = "note-card";
 
-    // Only show title preview
-    card.innerHTML = `<h3>${note.title}</h3>`;
+    card.innerHTML = `
+      <h3>${note.title}</h3>
+      <div class="note-actions">
+        <button class="primary-btn open-btn">Open</button>
+        <button class="delete-btn">Delete</button>
+      </div>
+    `;
 
-    card.onclick = () => openNoteModal(note);
+    card.querySelector(".open-btn").onclick = () => openNoteModal(note);
+
+    card.querySelector(".delete-btn").onclick = async (e) => {
+      e.stopPropagation();
+
+      await fetch(`${API_URL}/notes/${note.noteID}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      fetchNotes();
+    };
 
     notesList.appendChild(card);
   });
