@@ -1,4 +1,9 @@
 window.onload = async () => {
+  if (window.location.hostname === "localhost") {
+    document.body.innerHTML = "<h3>DEV MODE: Callback skipped</h3>";
+    return;
+  }
+
   const params = new URLSearchParams(window.location.search);
   const code = params.get("code");
 
@@ -17,18 +22,14 @@ window.onload = async () => {
     const data = await res.json();
 
     if (!data.id_token) {
-      console.error(data);
       document.body.innerHTML = "<h3 style='color:red'>Token exchange failed</h3>";
       return;
     }
 
     sessionStorage.setItem("id_token", data.id_token);
-
-    // IMPORTANT FIX: go back to ROOT index
     window.location.href = "/index.html";
 
   } catch (err) {
-    console.error(err);
     document.body.innerHTML = "<h3 style='color:red'>Error during login</h3>";
   }
 };

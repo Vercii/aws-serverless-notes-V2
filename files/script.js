@@ -27,7 +27,26 @@ let currentFolderID = null;
 
 const API_URL = "https://fjwdttb11f.execute-api.us-east-1.amazonaws.com";
 
+// 🔥 DEV MODE
+const DEV_MODE = window.location.hostname === "localhost";
+
+// 🔥 MOCK DATABASE
+let devFolders = [
+  { folderID: "1", name: "Dev Folder 1" },
+  { folderID: "2", name: "Dev Folder 2" }
+];
+
+let devNotes = {
+  "1": [
+    { noteID: "1", title: "Local Note A", content: "This is a dev note" }
+  ],
+  "2": [
+    { noteID: "2", title: "Local Note B", content: "Works offline!" }
+  ]
+};
+
 function getToken() {
+  if (DEV_MODE) return "dev-token";
   return sessionStorage.getItem("id_token");
 }
 
@@ -74,6 +93,12 @@ function updateUI() {
 // LOGIN
 // =========================
 function handleLogin() {
+  if (DEV_MODE) {
+    alert("DEV MODE: Login bypassed");
+    updateUI();
+    return;
+  }
+
   const clientId = "2ue45ahob50gej2u7vh4hdab7o";
   const redirectUri = "https://main.d3i1c30pbgufzf.amplifyapp.com/files/callback.html";
   const domain = "https://us-east-1rq8auujwo.auth.us-east-1.amazoncognito.com";
@@ -115,18 +140,25 @@ logoutBtn.onclick = () => {
 };
 
 // =========================
-// CREATE FOLDER (UNCHANGED)
+// CREATE FOLDER
 // =========================
 addFolderForm.onsubmit = async (e) => {
   e.preventDefault();
 
-  const token = getToken();
   let name = document.getElementById("folderName").value.trim();
 
-  if (name.length > 20) {
-    alert("Folder name must be 20 characters or less.");
+  if (DEV_MODE) {
+    devFolders.push({
+      folderID: Date.now().toString(),
+      name
+    });
+
+    addFolderForm.reset();
+    fetchFolders();
     return;
   }
+
+  const token = getToken();
 
   await fetch(`${API_URL}/folders`, {
     method: "POST",
@@ -142,11 +174,49 @@ addFolderForm.onsubmit = async (e) => {
 };
 
 // =========================
-// FETCH FOLDERS (UNCHANGED)
+// FETCH FOLDERS
 // =========================
 async function fetchFolders() {
-  const token = getToken();
+  if (DEV_MODE) {
+    foldersList.innerHTML = "";
 
+    devFolders.forEach((folder) => {
+      const card = document.createElement("div");
+      card.className = "note-card";
+
+      card.innerHTML = `
+        <h3>${folder.name}</h3>
+        <div class="folder-actions">
+          <button class="primary-btn open-btn">Open</button>
+          <button class="secondary-btn rename-btn">Rename</button>
+          <button class="delete-btn">Delete</button>
+        </div>
+      `;
+
+      card.querySelector(".open-btn").onclick = () =>
+        openFolder(folder.folderID);
+
+      card.querySelector(".rename-btn").onclick = () => {
+        const newName = prompt("Rename folder:", folder.name);
+        if (!newName) return;
+
+        folder.name = newName;
+        fetchFolders();
+      };
+
+      card.querySelector(".delete-btn").onclick = () => {
+        devFolders = devFolders.filter(f => f.folderID !== folder.folderID);
+        delete devNotes[folder.folderID];
+        fetchFolders();
+      };
+
+      foldersList.appendChild(card);
+    });
+
+    return;
+  }
+
+  const token = getToken();
   const res = await fetch(`${API_URL}/folders`, {
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -202,10 +272,26 @@ async function fetchFolders() {
 }
 
 // =========================
-// CREATE NOTE (UNCHANGED)
+// CREATE NOTE
 // =========================
 addNoteForm.onsubmit = async (e) => {
   e.preventDefault();
+
+  if (DEV_MODE) {
+    if (!devNotes[currentFolderID]) {
+      devNotes[currentFolderID] = [];
+    }
+
+    devNotes[currentFolderID].push({
+      noteID: Date.now().toString(),
+      title: noteTitle.value,
+      content: noteContent.value
+    });
+
+    addNoteForm.reset();
+    fetchNotes();
+    return;
+  }
 
   const token = getToken();
 
@@ -227,9 +313,39 @@ addNoteForm.onsubmit = async (e) => {
 };
 
 // =========================
-// FETCH NOTES (🔥 UPDATED)
+// FETCH NOTES
 // =========================
 async function fetchNotes() {
+  if (DEV_MODE) {
+    const notes = devNotes[currentFolderID] || [];
+    notesList.innerHTML = "";
+
+    notes.forEach((note) => {
+      const card = document.createElement("div");
+      card.className = "note-card";
+
+      card.innerHTML = `
+        <h3>${note.title}</h3>
+        <div class="note-actions">
+          <button class="primary-btn open-btn">Open</button>
+          <button class="delete-btn">Delete</button>
+        </div>
+      `;
+
+      card.querySelector(".open-btn").onclick = () => openNoteModal(note);
+
+      card.querySelector(".delete-btn").onclick = () => {
+        devNotes[currentFolderID] =
+          devNotes[currentFolderID].filter(n => n.noteID !== note.noteID);
+        fetchNotes();
+      };
+
+      notesList.appendChild(card);
+    });
+
+    return;
+  }
+
   const token = getToken();
 
   const res = await fetch(
@@ -254,9 +370,7 @@ async function fetchNotes() {
 
     card.querySelector(".open-btn").onclick = () => openNoteModal(note);
 
-    card.querySelector(".delete-btn").onclick = async (e) => {
-      e.stopPropagation();
-
+    card.querySelector(".delete-btn").onclick = async () => {
       await fetch(`${API_URL}/notes/${note.noteID}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
@@ -286,6 +400,18 @@ closeModalBtn.onclick = () => {
 };
 
 saveNoteBtn.onclick = async () => {
+  if (DEV_MODE) {
+    const notes = devNotes[currentFolderID];
+
+    const note = notes.find(n => n.noteID === activeNoteID);
+    note.title = modalTitle.value;
+    note.content = modalContent.value;
+
+    noteModal.style.display = "none";
+    fetchNotes();
+    return;
+  }
+
   const token = getToken();
 
   await fetch(`${API_URL}/notes/${activeNoteID}`, {
@@ -303,5 +429,10 @@ saveNoteBtn.onclick = async () => {
   noteModal.style.display = "none";
   fetchNotes();
 };
+
+// 🔥 AUTO LOGIN IN DEV
+if (DEV_MODE) {
+  sessionStorage.setItem("id_token", "dev-token");
+}
 
 updateUI();
