@@ -19,6 +19,13 @@
 
 <main class="container">
 
+  <!-- TOP BAR -->
+  <div id="topBar" class="top-bar" style="display:none;">
+    <input type="text" id="searchInput" placeholder="Search..." class="search-input" />
+    <button id="addBtn" class="primary-btn">+ Add</button>
+  </div>
+
+  <!-- LANDING -->
   <section id="landingSection" class="landing">
     <div class="landing-content">
       <h2>Simple. Secure. Serverless Notes.</h2>
@@ -27,37 +34,18 @@
     </div>
   </section>
 
+  <!-- FOLDERS -->
   <section id="foldersSection" style="display:none">
-
-    <div class="add-note-card">
-      <h2>Create Folder</h2>
-      <form id="addFolderForm">
-        <input type="text" id="folderName" maxlength="20" required>
-        <button class="primary-btn">Create Folder</button>
-      </form>
-    </div>
-
     <h2>Your Folders</h2>
     <div id="foldersList" class="notes-grid"></div>
-
   </section>
 
+  <!-- NOTES -->
   <section id="notesSection" style="display:none">
-
     <button id="backBtn" class="secondary-btn">← Back</button>
-
-    <div class="add-note-card">
-      <h2>Add Note</h2>
-      <form id="addNoteForm">
-        <input type="text" id="noteTitle" maxlength="20" required>
-        <textarea id="noteContent" required></textarea>
-        <button class="primary-btn">Add Note</button>
-      </form>
-    </div>
 
     <h2>Your Notes</h2>
     <div id="notesList" class="notes-grid"></div>
-
   </section>
 
 </main>
@@ -65,7 +53,7 @@
 <!-- MODAL -->
 <div id="noteModal" class="modal">
   <div class="modal-content">
-    <h2>Edit Note</h2>
+    <h2 id="modalHeader">Edit</h2>
     <input type="text" id="modalTitle" maxlength="20">
     <textarea id="modalContent"></textarea>
     <button id="saveNoteBtn" class="primary-btn">Save</button>
