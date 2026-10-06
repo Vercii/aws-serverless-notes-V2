@@ -3,64 +3,169 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Serverless Notes V2</title>
-  <link rel="stylesheet" href="/files/style.css">
+  <meta name="description" content="Clotes — a simple serverless notes application">
+  <title>Clotes</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header>
-  <h1>Serverless Notes</h1>
-  <div class="nav-actions">
-    <button id="themeToggle" class="nav-btn">☾</button>
-    <button id="loginBtn" class="nav-link">Login</button>
-    <button id="logoutBtn" class="nav-btn" style="display:none">Logout</button>
+  <div id="appShell" class="app-shell">
+
+    <aside class="sidebar">
+      <div class="brand">
+        <strong>Clotes</strong>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button id="allNotesNav" class="side-nav-item active">
+          <span class="nav-icon">⌁</span>
+          All Notes
+        </button>
+        <button id="foldersNav" class="side-nav-item">
+          <span class="nav-icon">▱</span>
+          Folders
+        </button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="profile-card">
+          <div class="avatar">R</div>
+          <div class="profile-copy">
+            <strong>Renzo</strong>
+            <span>Cloud workspace</span>
+          </div>
+          <button id="logoutBtn" class="icon-btn" title="Log out" aria-label="Log out">↪</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+
+      <header class="mobile-header">
+        <div class="brand compact">
+          <strong>Clotes</strong>
+        </div>
+      </header>
+
+      <section id="dashboardSection" class="dashboard-view">
+
+        <div class="page-heading">
+          <div>
+            <div class="eyebrow">YOUR WORKSPACE</div>
+            <h1 id="pageTitle">Good evening, Renzo.</h1>
+            <p id="pageSubtitle">Capture ideas, organize thoughts, and keep everything in one place.</p>
+          </div>
+
+          <button id="addBtn" class="primary-btn large-btn">
+            <span>＋</span> New
+          </button>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-card">
+            <span class="stat-label">Total notes</span>
+            <strong id="totalNotesStat">0</strong>
+            <span class="stat-detail">Across your workspace</span>
+          </div>
+
+          <div class="stat-card">
+            <span class="stat-label">Folders</span>
+            <strong id="totalFoldersStat">0</strong>
+            <span class="stat-detail">Organized spaces</span>
+          </div>
+
+          <div class="stat-card accent-stat">
+            <span class="stat-label">Current folder</span>
+            <strong id="currentFolderStat">All notes</strong>
+            <span class="stat-detail" id="currentFolderDetail">Everything at a glance</span>
+          </div>
+        </div>
+
+        <div class="content-toolbar">
+          <div class="view-title">
+            <h2 id="contentTitle">Your notes</h2>
+            <span id="contentCount">0 notes</span>
+          </div>
+
+          <div class="toolbar-actions">
+            <label class="search-box">
+              <span>⌕</span>
+              <input id="searchInput" type="search" placeholder="Search..." autocomplete="off">
+            </label>
+            <button id="viewToggleBtn" class="icon-btn bordered" title="Toggle view" aria-label="Toggle note view">▦</button>
+          </div>
+        </div>
+
+        <section id="foldersSection">
+          <div id="foldersList" class="folders-grid"></div>
+        </section>
+
+        <section id="notesSection">
+          <div id="notesList" class="notes-grid"></div>
+
+          <div id="emptyState" class="empty-state" style="display:none;">
+            <div class="empty-icon">✦</div>
+            <h3 id="emptyTitle">Nothing here yet</h3>
+            <p id="emptyText">Create your first note and it will appear here.</p>
+            <button id="emptyAddBtn" class="primary-btn">Create a note</button>
+          </div>
+        </section>
+
+      </section>
+
+      <section id="landingSection" class="landing-view">
+        <div class="landing-glow"></div>
+
+        <div class="landing-content">
+          <div class="landing-badge">SERVERLESS • SECURE • SIMPLE</div>
+
+          <h1>Your thoughts,<br><span>without the clutter.</span></h1>
+
+          <p>
+            Store your notes in the cloud with a lightweight serverless
+            architecture built for speed and simplicity.
+          </p>
+
+          <div class="landing-actions">
+            <button id="landingLoginBtn" class="primary-btn large-btn">
+              Sign up / Log in
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </main>
   </div>
-</header>
 
-<main class="container">
+  <div id="noteModal" class="modal" aria-hidden="true">
+    <div class="modal-backdrop"></div>
 
-  <!-- TOP BAR -->
-  <div id="topBar" class="top-bar" style="display:none;">
-    <input type="text" id="searchInput" placeholder="Search..." class="search-input" />
-    <button id="addBtn" class="primary-btn">+ Add</button>
-  </div>
+    <div class="modal-content">
+      <div class="modal-top">
+        <div>
+          <span class="eyebrow">WORKSPACE</span>
+          <h2 id="modalHeader">Create Note</h2>
+        </div>
+        <button id="closeModalBtn" class="icon-btn close-btn" aria-label="Close">×</button>
+      </div>
 
-  <!-- LANDING -->
-  <section id="landingSection" class="landing">
-    <div class="landing-content">
-      <h2>Simple. Secure. Serverless Notes.</h2>
-      <p>Store your notes in the cloud with a fast serverless architecture.</p>
-      <button id="landingLoginBtn" class="primary-btn">Sign up / Log in</button>
+      <label class="field">
+        <span>Title</span>
+        <input type="text" id="modalTitle" maxlength="60" placeholder="Give your note a title...">
+      </label>
+
+      <label id="contentField" class="field">
+        <span>Content</span>
+        <textarea id="modalContent" placeholder="Start writing..."></textarea>
+      </label>
+
+      <div class="modal-footer">
+        <button id="cancelModalBtn" class="secondary-btn">Cancel</button>
+        <button id="saveNoteBtn" class="primary-btn">Save</button>
+      </div>
     </div>
-  </section>
-
-  <!-- FOLDERS -->
-  <section id="foldersSection" style="display:none">
-    <h2>Your Folders</h2>
-    <div id="foldersList" class="notes-grid"></div>
-  </section>
-
-  <!-- NOTES -->
-  <section id="notesSection" style="display:none">
-    <button id="backBtn" class="secondary-btn">← Back</button>
-
-    <h2>Your Notes</h2>
-    <div id="notesList" class="notes-grid"></div>
-  </section>
-
-</main>
-
-<!-- MODAL -->
-<div id="noteModal" class="modal">
-  <div class="modal-content">
-    <h2 id="modalHeader">Edit</h2>
-    <input type="text" id="modalTitle" maxlength="20">
-    <textarea id="modalContent"></textarea>
-    <button id="saveNoteBtn" class="primary-btn">Save</button>
-    <button id="closeModalBtn" class="secondary-btn">Close</button>
   </div>
-</div>
 
-<script src="/files/script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
