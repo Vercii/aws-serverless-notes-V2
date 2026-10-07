@@ -3,17 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Serverless Notes V2</title>
-  <link rel="stylesheet" href="/files/style.css">
+  <meta name="description" content="Clotes — Your thoughts decluttered. Notes and folders, kept tidy in the cloud.">
+  <meta name="theme-color" content="#faf8f2">
+  <title>Clotes | Your thoughts decluttered</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="files/style.css">
 </head>
 <body>
 
 <header>
-  <h1>Serverless Notes</h1>
+  <div class="brand">
+    <span class="wordmark">Clotes</span>
+  </div>
   <div class="nav-actions">
-    <button id="themeToggle" class="nav-btn">☾</button>
-    <button id="loginBtn" class="nav-link">Login</button>
-    <button id="logoutBtn" class="nav-btn" style="display:none">Logout</button>
+    <button id="loginBtn" class="nav-link">Log in</button>
+    <button id="logoutBtn" class="nav-btn" style="display:none">Log out</button>
   </div>
 </header>
 
@@ -21,22 +28,70 @@
 
   <!-- TOP BAR -->
   <div id="topBar" class="top-bar" style="display:none;">
-    <input type="text" id="searchInput" placeholder="Search..." class="search-input" />
+    <input type="text" id="searchInput" placeholder="Search…" class="search-input" aria-label="Search" />
     <button id="addBtn" class="primary-btn">+ Add</button>
   </div>
 
   <!-- LANDING -->
   <section id="landingSection" class="landing">
     <div class="landing-content">
-      <h2>Simple. Secure. Serverless Notes.</h2>
-      <p>Store your notes in the cloud with a fast serverless architecture.</p>
-      <button id="landingLoginBtn" class="primary-btn">Sign up / Log in</button>
+
+      <div class="hero">
+        <div class="hero-text">
+          <span class="eyebrow">Clouds + Notes</span>
+          <h2>Your thoughts <span class="accent">decluttered</span></h2>
+          <p class="hero-sub">Clotes keeps your notes neatly folded into folders, easy to find in a blink, and safely tucked away in the cloud, so your head doesn't have to hold it all.</p>
+          <div class="hero-cta">
+            <button id="landingLoginBtn" class="primary-btn large">Sign up / Log in</button>
+            <span class="hero-note">Secure sign-in with Amazon Cognito</span>
+          </div>
+        </div>
+
+        <!-- decorative preview (purely visual) -->
+        <div class="hero-visual" aria-hidden="true">
+          <div class="paper paper-back"></div>
+          <div class="paper paper-mid"></div>
+          <div class="paper paper-front">
+            <span class="paper-tab"></span>
+            <span class="line line-title"></span>
+            <span class="line"></span>
+            <span class="line"></span>
+            <span class="line line-short"></span>
+          </div>
+          <span class="chip chip-a">Tidy</span>
+          <span class="chip chip-b">Searchable</span>
+        </div>
+      </div>
+
+      <div class="features">
+        <article class="feature">
+          <span class="feature-num">01</span>
+          <h3>Folders that make sense</h3>
+          <p>Give every thought a home. Group your notes into folders and keep the mess out of sight.</p>
+        </article>
+        <article class="feature">
+          <span class="feature-num">02</span>
+          <h3>Find it fast</h3>
+          <p>Filter your folders and notes as you type, no digging required.</p>
+        </article>
+        <article class="feature">
+          <span class="feature-num">03</span>
+          <h3>Safe in the cloud</h3>
+          <p>Built on AWS Lambda, API Gateway and DynamoDB, with sign-in handled by Amazon Cognito.</p>
+        </article>
+      </div>
+
     </div>
   </section>
 
   <!-- FOLDERS -->
   <section id="foldersSection" style="display:none">
-    <h2>Your Folders</h2>
+    <div class="section-head">
+      <div>
+        <h2>Your Folders</h2>
+        <p class="section-sub">Pick a folder to see what's inside.</p>
+      </div>
+    </div>
     <div id="foldersList" class="notes-grid"></div>
   </section>
 
@@ -44,20 +99,32 @@
   <section id="notesSection" style="display:none">
     <button id="backBtn" class="secondary-btn">← Back</button>
 
-    <h2>Your Notes</h2>
+    <div class="section-head">
+      <div>
+        <h2>Your Notes</h2>
+        <p class="section-sub">Everything in this folder, all in one place.</p>
+      </div>
+    </div>
     <div id="notesList" class="notes-grid"></div>
   </section>
 
 </main>
 
+<footer class="site-footer">
+  <span class="wordmark small">Clotes</span>
+  <span>Your thoughts decluttered</span>
+</footer>
+
 <!-- MODAL -->
 <div id="noteModal" class="modal">
   <div class="modal-content">
     <h2 id="modalHeader">Edit</h2>
-    <input type="text" id="modalTitle" maxlength="20">
-    <textarea id="modalContent"></textarea>
-    <button id="saveNoteBtn" class="primary-btn">Save</button>
-    <button id="closeModalBtn" class="secondary-btn">Close</button>
+    <input type="text" id="modalTitle" maxlength="20" placeholder="Title">
+    <textarea id="modalContent" placeholder="Start writing…"></textarea>
+    <div class="modal-actions">
+      <button id="closeModalBtn" class="secondary-btn">Close</button>
+      <button id="saveNoteBtn" class="primary-btn">Save</button>
+    </div>
   </div>
 </div>
 

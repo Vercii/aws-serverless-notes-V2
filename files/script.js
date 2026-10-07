@@ -23,9 +23,6 @@ const saveNoteBtn = document.getElementById("saveNoteBtn");
 const closeModalBtn = document.getElementById("closeModalBtn");
 const modalHeader = document.getElementById("modalHeader");
 
-// DARK MODE
-const themeToggle = document.getElementById("themeToggle");
-
 let activeNoteID = null;
 let currentFolderID = null;
 let modalMode = "edit";
@@ -49,18 +46,6 @@ let devNotes = {
 function getToken() {
   if (DEV_MODE) return "dev-token";
   return sessionStorage.getItem("id_token");
-}
-
-// DARK MODE
-themeToggle.onclick = () => {
-  const isDark = document.body.classList.toggle("dark");
-  themeToggle.textContent = isDark ? "☀" : "☾";
-  localStorage.setItem("theme", isDark ? "dark" : "light");
-};
-
-if (localStorage.getItem("theme") === "dark") {
-  document.body.classList.add("dark");
-  themeToggle.textContent = "☀";
 }
 
 // UI
